@@ -70,3 +70,8 @@ Create a file named `.env` in the root directory of the project and add your Mon
 
 ```env
 MONGO_URI="mongodb+srv://<your_username>:<your_password>@<cluster_url>/?retryWrites=true&w=majority"
+```
+## Preview of Api
+<img width="948" height="595" alt="image" src="https://github.com/user-attachments/assets/660bcf49-d2d8-4a1c-ada3-083e4e31eab3" />
+
+
