@@ -83,5 +83,5 @@ MONGO_URI="mongodb+srv://<your_username>:<your_password>@<cluster_url>/?retryWri
 ## How to contact me
 * **Email**: claudiaagyeere@gmail.com
 
-## THANK YOU FOR YOUR TIME
+##    --------------------------------------------------------------THANK YOU FOR YOUR TIME----------------------------------------------------------------------
 
