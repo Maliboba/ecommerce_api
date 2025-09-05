@@ -4,6 +4,34 @@ from db import products_collection, users_collection, users_cart
 from pydantic import BaseModel, EmailStr
 from utils import replace_id
 
+#  Defining tags
+tags_metadata = [
+    {
+        "name": "Home",
+        "description": "Welcome to the API",
+    },
+    {
+        "name": "Products",
+        "description": "Endpoints for managing products.",
+    },
+    {
+        "name": "Users",
+        "description": "Endpoints for user registration and login.",
+    },
+    {
+        "name": "Carts",
+        "description": "Endpoints for managing the shopping cart.",
+    },
+    {
+        "name": "Checkout",
+        "description": "Endpoint for calculating the order summary.",
+    },
+]
+
+# Adding openapi_tags to fastapi app initialization
+app = FastAPI(openapi_tags=tags_metadata)
+
+
 class UserModel(BaseModel):
     email: EmailStr
     password: str
@@ -19,36 +47,35 @@ class CartModel(BaseModel):
     product_id: str
     quantity: int
 
-app = FastAPI()
 
-@app.get("/")
+@app.get("/", tags=["Home"])
 def get_home():
     return {"message": "Welcome to our ecommerce site"}
 
 # List some products
-@app.get("/products")
+@app.get("/products", tags=["Products"])
 def get_products():
     all_products = list(products_collection.find({}))
     return {"products": list(map(replace_id, all_products))}
 
-@app.post("/products")
+@app.post("/products", tags=["Products"])
 def post_products(product: ProductModel):
     products_collection.insert_one(product.model_dump())
     return {"message": "Product added successfully"}
 
-@app.get("/products/{product_id}")
+@app.get("/products/{product_id}", tags=["Products"])
 def get_product_by_id(product_id: str):
     product = products_collection.find_one({"_id": ObjectId(product_id)})
     if product:
         return {"product": replace_id(product)}
     raise HTTPException(status_code=404, detail="Product not found")
 
-@app.get("/users")
+@app.get("/users", tags=["Users"])
 def get_users():
     users = list(users_collection.find({}))
     return {"users": list(map(replace_id, users))}
 
-@app.post("/register")
+@app.post("/register", tags=["Users"])
 def register_user(user: UserModel):
     # Checking if user with the same email already exists
     if users_collection.find_one({"email": user.email}):
@@ -57,7 +84,7 @@ def register_user(user: UserModel):
     users_collection.insert_one(user.model_dump())
     return {"message": "Registered successfully"}
 
-@app.post("/login")
+@app.post("/login", tags=["Users"])
 def login_user(user: UserModel):
     ecommerce_user = users_collection.find_one({"email": user.email})
     if not ecommerce_user or ecommerce_user["password"] != user.password:
@@ -65,7 +92,7 @@ def login_user(user: UserModel):
     
     return {"message": "Login successful"}
 
-@app.post("/cart")
+@app.post("/cart", tags=["Carts"])
 def cart(item: CartModel):
     # Check if the user and product exist before adding to cart
     if not users_collection.find_one({"_id": ObjectId(item.user_id)}):
@@ -98,7 +125,7 @@ def cart(item: CartModel):
 
     return {"message": f"{item.quantity} item(s) added to cart"}
 
-@app.get("/cart/{user_id}")
+@app.get("/cart/{user_id}", tags=["Carts"])
 def get_cart(user_id: str):
     # Converting the string user_id from the URL to a MongoDB ObjectId
     try:
@@ -125,7 +152,7 @@ def get_cart(user_id: str):
 
     return {"cart_items": items}
 
-@app.post("/checkout/{user_id}")
+@app.post("/checkout/{user_id}", tags=["Checkout"])
 def checkout(user_id: str):
     # Convert the string user_id from the URL to a MongoDB ObjectId
     try:
