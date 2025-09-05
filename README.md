@@ -31,7 +31,7 @@ Follow these steps to set up and run the API locally on your machine.
 
 ### Prerequisites
 
-Make sure you have Python 3.8+ installed on your system.
+Make sure you have the latest python version installed on your system.
 
 ### Installation
 
@@ -80,6 +80,8 @@ MONGO_URI="mongodb+srv://<your_username>:<your_password>@<cluster_url>/?retryWri
 ## Preview of registering a user
 <img width="957" height="589" alt="image" src="https://github.com/user-attachments/assets/4ec12862-9e32-4742-8fd2-ccbeae14257e" />
 
+## How to contact me
+*Email: claudiaagyeere@gmail.com
 
-
+## THANK YOU FOR YOUR TIME
 
